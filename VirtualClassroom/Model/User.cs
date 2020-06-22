@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace VirtualClassroom.Model
 {
-    public class User : INotifyPropertyChanged
+	public class User : INotifyPropertyChanged
     {
-        public enum Role { Administrator, Profesor, Asistent}
+        public enum Role { Administrator, Profesor, Asistent }
         #region Fields
         private int id;
         private string name;

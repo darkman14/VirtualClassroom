@@ -109,7 +109,8 @@ namespace VirtualClassroom
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
-
+			IsLogged = false;
+			DataContext = this;
         }
 
         #region INotifyPropertyChanged implementation
