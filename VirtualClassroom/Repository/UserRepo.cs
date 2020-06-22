@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace VirtualClassroom.Repository
         private SqlConnection con;
         private void Connection()
         {
-            string constr = @"Data Source =.; Initial Catalog = VirtualClassrom; Integrated Security = True";
+            string constr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
             con = new SqlConnection(constr);
         }
 
