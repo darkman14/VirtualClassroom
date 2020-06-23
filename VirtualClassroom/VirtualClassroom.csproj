@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\AddButtonVisibilityConverter.cs" />
     <Compile Include="Converters\DeleteButtonVisibilityConverter.cs" />
+    <Compile Include="Repository\ClassroomRepo.cs" />
     <Compile Include="Repository\InstitutionRepo.cs" />
     <Compile Include="Repository\Interfaces\ICalendarInfoInterface.cs" />
     <Compile Include="Repository\Interfaces\IClassroomsInterface.cs" />

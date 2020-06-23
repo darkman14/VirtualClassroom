@@ -6,7 +6,289 @@
         xmlns:local="clr-namespace:VirtualClassroom.View"
         mc:Ignorable="d"
         Title="ClassroomsWindow" Height="300" Width="300">
-    <Grid>
-        
+    <Grid Name="mainGrid" Margin="10,20,10,20" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Unos"
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="1" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Sifra ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="2" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Broj ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="3" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Tip ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="1" Grid.Column="1"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtCode"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="1" Grid.Column="2"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtNumberClassroom"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="1" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtNoSeats"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="1" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtTypeOfClassroom"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Button Grid.Row="1" Grid.Column="4"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Content="Dodaj ucionicu" 
+				Click="btnAdd_Click"
+				FontFamily="Arial"
+				FontSize="14"
+				Width="120"
+				Height="25"
+				Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Pretraga "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBlock Grid.Row="2" Grid.Column="1" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Po sifri ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBlock Grid.Row="2" Grid.Column="2" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Po broju ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBlock Grid.Row="2" Grid.Column="3" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Po broju sjedista: "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBlock Grid.Row="2" Grid.Column="3" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Po tipu ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBox Grid.Row="3" Grid.Column="1"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtSearchCode"
+				 FontFamily="Arial"
+				 FontSize="12" />
+        <TextBox Grid.Row="3" Grid.Column="2"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtSearchClassroomNo"
+				 FontFamily="Arial"
+				 FontSize="12" />
+        <TextBox Grid.Row="3" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtSearchSeatsNo"
+				 FontFamily="Arial"
+				 FontSize="12" />
+        <TextBox Grid.Row="3" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtSearchTypeOfClassroom"
+				 FontFamily="Arial"
+				 FontSize="12" />
+        <Button Grid.Row="3" Grid.Column="4"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center" 
+				Click="btnSearch_Click"
+				FontFamily="Arial"
+				FontSize="14"
+				Width="25"
+				Height="25">
+            <Image Source="/content/magnifier.jpg"/>
+        </Button>
+        <DataGrid Grid.Row="5" Grid.ColumnSpan="5" Name="dgClassrooms" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="150" />
+                <DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="150" />
+                <DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="150" />
+                <DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="150" />
+                <DataGridTemplateColumn Width="130" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <Button Content="Obrisi ucionicu" Click="btnDelete_Click" 
+									HorizontalAlignment="Center" VerticalAlignment="Center" 
+									FontFamily="Arial" FontSize="14" Width="120" Height="25" 
+									Name="btnDelete" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="Visibility" Value="{Binding DataContext._isVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"/>
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="130" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <Button Content="Izmeni ucionicu" Click="btnUpdate_Click" 
+									HorizontalAlignment="Center" VerticalAlignment="Center" 
+									FontFamily="Arial" FontSize="14" Width="120" Height="25" 
+									Name="btnDelete" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="Visibility" Value="{Binding DataContext._isVisible, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"/>
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Grid.Row="5" Grid.Column="0" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Unos izmena"
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="5" Grid.Column="1" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Sifra ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="5" Grid.Column="2" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Broj ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="5" Grid.Column="3" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Broj sjedista: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="5" Grid.Column="3" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Tip ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="6" Grid.Column="1"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtChangeCode"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="6" Grid.Column="2"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtChangeClassroomNo"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="6" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtChangeSeatsNo"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBox Grid.Row="6" Grid.Column="3"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="txtChangeTypeOfClassroom"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Button Grid.Row="6" Grid.Column="4"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Content="Potvrdi izmenu" 
+				Click="btnChange_Click"
+				FontFamily="Arial"
+				FontSize="14"
+				Width="120"
+				Height="25"
+				Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </Window>
