@@ -9,14 +9,14 @@ namespace VirtualClassroom.Model
 {
     public class Classroom : INotifyPropertyChanged
     {
-        public enum ClassromType { withComp, withoutComp }
+        public enum ClassroomType { withComp, withoutComp }
 
         #region Fields
         private int id;
         private string code;
         private int classroomNo;
         private int seatsNo;
-        private ClassromType typeOfClassroom;
+        private ClassroomType typeOfClassroom;
         private Institution institution;
         #endregion Fields
 
@@ -86,7 +86,7 @@ namespace VirtualClassroom.Model
             }
         }
 
-        public ClassromType TypeOfClassroom
+        public ClassroomType TypeOfClassroom
         {
             get
             {
@@ -109,6 +109,11 @@ namespace VirtualClassroom.Model
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public static implicit operator Classroom(Classroom v)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

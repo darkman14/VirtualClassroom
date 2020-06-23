@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualClassroom.Model;
 
 namespace VirtualClassroom.Interfaces
 {
     public interface IClassroomsInterface
     {
-        IQueryable<Classroom> GetAll();
-        void Add(Classroom classroom);
-        void Update(int id);
+        IEnumerable<Classroom> GetAll();
+        IEnumerable<Classroom> GetByParameters(Dictionary<string, string> searchParameters);
+        bool Add(Classroom classroom);
+        void Update(Classroom classroom);
         void Delete(int Id);
     }
 }
