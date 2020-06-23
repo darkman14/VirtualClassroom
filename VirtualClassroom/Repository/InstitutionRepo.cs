@@ -14,7 +14,7 @@ namespace VirtualClassroom.Repository
 		private SqlConnection con;
 		private void Connection()
 		{
-			string constr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString; ;
+			string constr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 			con = new SqlConnection(constr);
 		}
 
