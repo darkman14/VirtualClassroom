@@ -32,7 +32,7 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@code", classroom.Code);
 					cmd.Parameters.AddWithValue("@classroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@seatsNo", classroom.SeatsNo);
-					cmd.Parameters.AddWithValue("@typeOfClassroom", classroom.TypeOfClassroom);
+					cmd.Parameters.AddWithValue("@typeOfClassroom", classroom.HasComp);
 
 
 					con.Open();
@@ -103,11 +103,10 @@ namespace VirtualClassroom.Repository
 					int classroomId = int.Parse(dataRow["Id"].ToString());
 					string code = dataRow["Code"].ToString();
 					string classroomNo = dataRow["Classroom_classroomNo"].ToString();
-					string seatsNo = dataRow["Classroom_setasNos"].ToString();
-					string typeOfClassroom = dataRow["Classroom_typeOfClassroom"].ToString();
+					string seatsNo = dataRow["Classroom_seatsNo"].ToString();
+					bool hasComp = (dataRow["Classroom_typeOfClassroom"].ToString() == "0") ? false : true;
 
-
-					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), TypeOfClassroom = typeOfClassroom });
+					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp });
 				}
 			}
 			catch (Exception ex)
@@ -144,7 +143,7 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@Code", classroom.Code);
 					cmd.Parameters.AddWithValue("@ClassroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@SeatsNo", classroom.SeatsNo);
-					cmd.Parameters.AddWithValue("@TypeOfClassroom", classroom.TypeOfClassroom);
+					cmd.Parameters.AddWithValue("@TypeOfClassroom", classroom.HasComp);
 
 
 					con.Open();
@@ -190,10 +189,9 @@ namespace VirtualClassroom.Repository
 					string code = dataRow["Code"].ToString();
 					string classroomNo = dataRow["Classroom_classroomNo"].ToString();
 					string seatsNo = dataRow["Classroom_seatsNo"].ToString();
-					string typeOfClassroom = dataRow["Classroom_typeOfClassroom"].ToString();
+					bool hasComp = (dataRow["Classroom_typeOfClassroom"].ToString() == "0") ? false : true;
 
-
-					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), TypeOfClassroom = typeOfClassroom });
+					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp });
 				}
 			}
 			catch (Exception ex)

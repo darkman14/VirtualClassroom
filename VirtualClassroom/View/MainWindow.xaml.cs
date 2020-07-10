@@ -79,7 +79,7 @@ namespace VirtualClassroom
 
         private void btnClassroom_Click(object sender, RoutedEventArgs e)
         {
-            ClassroomsWindow classroomWindow = new ClassroomsWindow();
+            ClassroomsWindow classroomWindow = new ClassroomsWindow(user);
             classroomWindow.ShowDialog();
         }
 

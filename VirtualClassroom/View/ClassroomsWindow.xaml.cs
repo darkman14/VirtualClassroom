@@ -89,6 +89,7 @@ namespace VirtualClassroom.View
 				OnPropertyChanged(nameof(ClassId));
 			}
 		}
+
 		public ClassroomsWindow(User user)
 		{
 			InitializeComponent();
@@ -128,7 +129,7 @@ namespace VirtualClassroom.View
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text) || string.IsNullOrEmpty(txtTypeOfClassroom.Text))
+			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text) || !(bool)boolHasComp.IsChecked)
 			{
 				MessageBox.Show("Sva polja za unos moraju biti popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
@@ -142,16 +143,17 @@ namespace VirtualClassroom.View
 			}
 			else
 			{
-				Classroom classroom = new Classroom() { Code = txtCode.Text, ClassroomNo = GetNo(txtNumberClassroom.Text), SeatsNo = GetNo(txtNoSeats.Text), TypeOfClassroom = txtTypeOfClassroom.Text };
+				Classroom classroom = new Classroom() { Code = txtCode.Text, ClassroomNo = GetNo(txtNumberClassroom.Text), SeatsNo = GetNo(txtNoSeats.Text), HasComp = (bool)boolHasComp.IsChecked };
 				bool clSuccessfull = _classroom.Add(classroom);
 			}
 
 			txtCode.Clear();
 			txtNumberClassroom.Clear();
 			txtNoSeats.Clear();
-			txtTypeOfClassroom.Clear();
+			boolHasComp.IsChecked = false;
 			dgClassrooms.ItemsSource = _classroom.GetAll();
 		}
+
 		private void btnSearch_Click(object sender, RoutedEventArgs e)
 		{
 			Dictionary<string, string> searchParameters = new Dictionary<string, string>();
@@ -204,15 +206,15 @@ namespace VirtualClassroom.View
 			txtChangeCode.Text = classroom.Code;
 			txtChangeClassroomNo.Text = classroom.ClassroomNo.ToString();
 			txtChangeSeatsNo.Text = classroom.SeatsNo.ToString();
-			txtChangeTypeOfClassroom.Text = GetClassroomType(classroom.TypeOfClassroom);
+			txtChangeTypeOfClassroom.Text = GetClassroomType(classroom.HasComp);
 			ClassId = classroom.Id;
 			IsChange = true;
 
 		}
 
-		private string GetClassroomType(Classroom.ClassroomType typeOfClassroom)
+		private string GetClassroomType(bool hasComp)
 		{
-			if (typeOfClassroom == 0)
+			if (hasComp == true)
 			{
 				return "Da";
 			}
@@ -235,7 +237,7 @@ namespace VirtualClassroom.View
 			}
 			else
 			{
-				Classroom classroom = new Classroom() { Id = ClassId, Code = txtChangeCode.Text, ClassroomNo = GetNo(txtChangeClassroomNo.Text), SeatsNo = GetNo(txtChangeSeatsNo.Text), TypeOfClassroom = txtChangeTypeOfClassroom.Text };
+				Classroom classroom = new Classroom() { Id = ClassId, Code = txtChangeCode.Text, ClassroomNo = GetNo(txtChangeClassroomNo.Text), SeatsNo = GetNo(txtChangeSeatsNo.Text), HasComp = (bool)boolHasComp.IsChecked };
 				_classroom.Update(classroom);
 			}
 

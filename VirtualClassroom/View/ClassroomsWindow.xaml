@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VirtualClassroom.View"
         mc:Ignorable="d"
         Title="ClassroomsWindow" Height="300" Width="300">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid Name="mainGrid" Margin="10,20,10,20" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -80,14 +83,12 @@
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <TextBox Grid.Row="1" Grid.Column="3"
+        <CheckBox Grid.Row="1" Grid.Column="3"
 				 Height="25"
 				 Width="150"
 				 HorizontalAlignment="Center"
 				 VerticalAlignment="Center" 
-				 Name="txtTypeOfClassroom"
-				 FontFamily="Arial"
-				 FontSize="12"
+				 Name="boolHasComp"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button Grid.Row="1" Grid.Column="4"
 				HorizontalAlignment="Center"

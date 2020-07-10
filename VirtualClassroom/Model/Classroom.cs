@@ -9,14 +9,12 @@ namespace VirtualClassroom.Model
 {
     public class Classroom : INotifyPropertyChanged
     {
-        public enum ClassroomType { withComp, withoutComp }
-
         #region Fields
         private int id;
         private string code;
         private int classroomNo;
         private int seatsNo;
-        private ClassroomType typeOfClassroom;
+        private bool hasComp;
         private Institution institution;
         #endregion Fields
 
@@ -86,17 +84,17 @@ namespace VirtualClassroom.Model
             }
         }
 
-        public ClassroomType TypeOfClassroom
+        public bool HasComp
         {
             get
             {
-                return typeOfClassroom;
+                return hasComp;
             }
 
             set
             {
-                typeOfClassroom = value;
-                OnPropertyChanged(nameof(TypeOfClassroom));
+                hasComp = value;
+                OnPropertyChanged(nameof(HasComp));
             }
         }
 
@@ -110,8 +108,6 @@ namespace VirtualClassroom.Model
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
         #endregion
     }
 }
