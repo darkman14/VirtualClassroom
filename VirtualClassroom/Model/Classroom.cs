@@ -111,10 +111,7 @@ namespace VirtualClassroom.Model
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static implicit operator Classroom(Classroom v)
-        {
-            throw new NotImplementedException();
-        }
+        
         #endregion
     }
 }

@@ -107,7 +107,7 @@ namespace VirtualClassroom.Repository
 					string typeOfClassroom = dataRow["Classroom_typeOfClassroom"].ToString();
 
 
-					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = classroomNo, SeatsNo = seatsNo, TypeOfClassroom = typeOfClassroom });
+					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), TypeOfClassroom = typeOfClassroom });
 				}
 			}
 			catch (Exception ex)
@@ -117,6 +117,18 @@ namespace VirtualClassroom.Repository
 
 			return classrooms;
 		}
+		private int GetNo(string text)
+		{
+			int outNumber;
+			bool isValid = Int32.TryParse(text, out outNumber);
+
+			if (isValid)
+			{
+				return outNumber;
+			}
+			return 0;
+		}
+
 		public void Update(Classroom classroom)
 		{
 			try
@@ -181,7 +193,7 @@ namespace VirtualClassroom.Repository
 					string typeOfClassroom = dataRow["Classroom_typeOfClassroom"].ToString();
 
 
-					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = classroomNo, SeatsNo = seatsNo, TypeOfClassroom = typeOfClassroom });
+					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), TypeOfClassroom = typeOfClassroom });
 				}
 			}
 			catch (Exception ex)
@@ -190,6 +202,34 @@ namespace VirtualClassroom.Repository
 			}
 
 			return classroom;
+		}
+		
+		string GetQuery(Dictionary<string, string> searchParameters, out string obj, out string parameter)
+		{
+			foreach (string param in searchParameters.Keys)
+			{
+				if (!string.IsNullOrEmpty(searchParameters[param]))
+				{
+					obj = searchParameters[param];
+					parameter = param.ToLower();
+					switch (param)
+					{
+						case "Code":
+							return "SELECT * FROM Classroom WHERE Code LIKE @" + parameter + ";";
+						case "Classroom Number":
+							return "SELECT * FROM Classroom WHERE Classroom_classroomNo LIKE @" + parameter + ";";
+						case "Seats Number":
+							return "SELECT * FROM Classroom WHERE Classroom_seatsNo LIKE @" + parameter + ";";
+						case "Type of Classroom":
+							return "SELECT * FROM Classroom WHERE Classroom_typeOfClassroom LIKE @" + parameter + ";";
+						default:
+							break;
+					}
+				}
+			}
+			parameter = string.Empty;
+			obj = string.Empty;
+			return string.Empty;
 		}
 	}
 }
