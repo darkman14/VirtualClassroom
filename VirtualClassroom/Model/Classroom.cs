@@ -16,6 +16,7 @@ namespace VirtualClassroom.Model
         private int seatsNo;
         private bool hasComp;
         private Institution institution;
+        private string institutionName;
         #endregion Fields
 
         #region Properties
@@ -95,6 +96,20 @@ namespace VirtualClassroom.Model
             {
                 hasComp = value;
                 OnPropertyChanged(nameof(HasComp));
+            }
+        }
+
+        public string InstitutionName
+        {
+            get
+            {
+                return institutionName;
+            }
+
+            set
+            {
+                institutionName = value;
+                OnPropertyChanged(nameof(InstitutionName));
             }
         }
 

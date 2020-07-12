@@ -14,12 +14,11 @@ namespace VirtualClassroom.View
 	/// Interaction logic for UsersWindow.xaml
 	/// </summary>
 	public partial class UsersWindow : Window, INotifyPropertyChanged
-    {
-		IInstitutionInterface _institution = new InstitutionRepo();
+	{
 		IUserInterface _user = new UserRepo();
 		bool isLogged, isAdmin, isChange;
 		Visibility isVisible;
-		int instId = 0;
+		int usId = 0;
 
 		public bool IsLogged
 		{
@@ -77,26 +76,25 @@ namespace VirtualClassroom.View
 			}
 		}
 
-		public int InstId
+		public int UserId
 		{
 			get
 			{
-				return instId;
+				return UserId;
 			}
 
 			set
 			{
-				instId = value;
-				OnPropertyChanged(nameof(InstId));
+				UserId = value;
+				OnPropertyChanged(nameof(UserId));
 			}
 		}
 
 		public UsersWindow(User user)
 		{
 			InitializeComponent();
-			IEnumerable<Institution> Institutions = _institution.GetAll();
+			IEnumerable<User> users = _user.GetAll();
 			isChange = false;
-			List<string> UserRoles = Enum.GetNames((typeof(User.Role))).ToList();
 
 			if (user == null)
 			{
@@ -104,12 +102,12 @@ namespace VirtualClassroom.View
 				isAdmin = false;
 				isVisible = Visibility.Hidden;
 			}
-			else if (user.UserRole == User.Role.Administrator)
-			{
-				isLogged = true;
-				isAdmin = true;
-				isVisible = Visibility.Visible;
-			}
+			//else if (user.UserRole == User.Role.Administrator)
+			//{
+			//	isLogged = true;
+			//	isAdmin = true;
+			//	isVisible = Visibility.Visible;
+			//}
 			else
 			{
 				isLogged = true;
@@ -118,61 +116,71 @@ namespace VirtualClassroom.View
 			}
 
 			DataContext = this;
-			dgInstitutions.ItemsSource = Institutions;
+			//dgUser.ItemsSource = User;
 
 		}
 
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
-			Institution institution = (Institution)dgInstitutions.SelectedItem;
-			_institution.Delete(institution.Id);
-			dgInstitutions.ItemsSource = _institution.GetAll();
+			User user = (User)dgUser.SelectedItem;
+			_user.DeleteUser(user.Id);
+			dgUser.ItemsSource = _user.GetAll();
 		}
+
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
-			//if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtName.Text) || string.IsNullOrEmpty(txtAddress.Text))
-			//{
-			//	MessageBox.Show("Sva polja za unos moraju biti popunjena", "Info poruka", MessageBoxButton.OK);
-			//	return;
-			//}
+			if (string.IsNullOrEmpty(txtName.Text) || string.IsNullOrEmpty(txtSurname.Text) || string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(txtUsername.Text) || string.IsNullOrEmpty(txtPassword.Text))
+			{
+				MessageBox.Show("Sva polja za unos moraju biti popunjena", "Info poruka", MessageBoxButton.OK);
+				return;
+			}
 
-			//List<Institution> institutions = (List<Institution>)_institution.GetAll();
+			List<User> users = (List<User>)_user.GetAll();
 
-			//if (institutions.Any(x => x.Code == txtCode.Text))
-			//{
-			//	MessageBox.Show("Ustanova sa datom sifrom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
-			//}
-			//else
-			//{
-			//	Institution institution = new Institution() { Code = txtCode.Text, Name = txtName.Text, Address = txtAddress.Text };
-			//	bool isSuccessfull = _institution.Add(institution);
-			//}
+			if (users.Any(x => x.Name == txtName.Text))
+			{
+				MessageBox.Show("Korisnik sa datim imenom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
+			}
+			else
+			{
+				User korisnik = new User() { Name = txtName.Text, Surname = txtSurname.Text, Email = txtEmail.Text, Username = txtUsername.Text, Password = txtPassword.Text };
+				//bool usSuccessfull = _user.AddUser(korisnik);
+			}
 
-			//txtCode.Clear();
-			//txtName.Clear();
-			//txtAddress.Clear();
-			//dgInstitutions.ItemsSource = _institution.GetAll();
+			txtName.Clear();
+			txtSurname.Clear();
+			txtEmail.Clear();
+			txtUsername.Clear();
+			txtPassword.Clear();
+			dgUser.ItemsSource = _user.GetAll();
 		}
 
 		private void btnSearch_Click(object sender, RoutedEventArgs e)
 		{
 			Dictionary<string, string> searchParameters = new Dictionary<string, string>();
 
-			searchParameters.Add("Code", txtSearchCode.Text);
 			searchParameters.Add("Name", txtSearchName.Text);
-			searchParameters.Add("Address", txtSearchAddress.Text);
+			searchParameters.Add("Surname", txtSearchSurname.Text);
+			searchParameters.Add("Email", txtSearchEmail.Text);
+			searchParameters.Add("Username", txtSearchUsername.Text);
+			searchParameters.Add("Password", txtSearchPassword.Text);
+
+
 
 			if (CheckParameters(searchParameters))
 			{
 				MessageBox.Show("Uneto vise od jednog parametra pretrage!", "Info poruka", MessageBoxButton.OK);
-				txtSearchCode.Clear();
 				txtSearchName.Clear();
-				txtSearchAddress.Clear();
+				txtSearchSurname.Clear();
+				txtSearchEmail.Clear();
+				txtSearchUsername.Clear();
+				txtSearchPassword.Clear();
+
 			}
 			else
 			{
-				dgInstitutions.ItemsSource = _institution.GetByParameters(searchParameters);
+				//dgUser.ItemsSource = _user.GetByParameters(searchParameters);
 			}
 		}
 
@@ -197,42 +205,49 @@ namespace VirtualClassroom.View
 
 		private void btnUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var instHelp = (Button)sender;
-			Institution institution = instHelp.DataContext as Institution;
+			var usHelp = (Button)sender;
+			User user = usHelp.DataContext as User;
 
-			txtChangeCode.Text = institution.Code;
-			txtChangeName.Text = institution.Name;
-			txtChangeAddress.Text = institution.Address;
-			InstId = institution.Id;
+			txtChangeName.Text = user.Name;
+			txtChangeSurname.Text = user.Surname.ToString();
+			txtChangeEmail.Text = user.Email.ToString();
+			txtChangeUsername.Text = user.Username.ToString();
+			txtChangePassword.Text = user.Password.ToString();
+			UserId = user.Id;
 			IsChange = true;
+
 		}
+
 
 		private void btnChange_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeName.Text) || string.IsNullOrEmpty(txtChangeAddress.Text))
+			if (string.IsNullOrEmpty(txtChangeName.Text) || string.IsNullOrEmpty(txtChangeSurname.Text) || string.IsNullOrEmpty(txtChangeEmail.Text) || string.IsNullOrEmpty(txtChangeUsername.Text) || string.IsNullOrEmpty(txtChangePassword.Text))
 			{
 				MessageBox.Show("Potrebno je da sva polja budu popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
 			}
 
-			List<Institution> institutions = (List<Institution>)_institution.GetAll();
+			List<User> user = (List<User>)_user.GetAll();
 
-			if (institutions.Any(x => x.Code == txtChangeCode.Text))
+			if (user.Any(x => x.Name == txtChangeName.Text))
 			{
-				MessageBox.Show("Ustanova sa datom sifrom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
+				MessageBox.Show("Korisnik sa datim imenom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
 			}
 			else
 			{
-				Institution institution = new Institution() { Id = InstId, Code = txtChangeCode.Text, Name = txtChangeName.Text, Address = txtChangeAddress.Text };
-				_institution.Update(institution);
+				User users = new User() { Id = UserId, Name = txtChangeName.Text, Surname = txtChangeSurname.Text, Email = txtChangeEmail.Text, Username = txtChangeUsername.Text, Password = txtChangePassword.Text };
+				_user.UpdateUser(users);
 			}
 
 			IsChange = false;
-			txtChangeCode.Clear();
 			txtChangeName.Clear();
-			txtChangeAddress.Clear();
-			dgInstitutions.ItemsSource = _institution.GetAll();
+			txtChangeSurname.Clear();
+			txtChangeEmail.Clear();
+			txtChangeUsername.Clear();
+			txtChangePassword.Clear(); 
+			dgUser.ItemsSource = _user.GetAll();
 		}
+
 
 		#region INotifyPropertyChanged implementation
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -243,5 +258,8 @@ namespace VirtualClassroom.View
 				handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 		#endregion
+
 	}
 }
+
+

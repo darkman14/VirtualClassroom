@@ -11,7 +11,7 @@
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 	</Window.Resources>
 
-	<Grid Name="mainGrid" Margin="10,20,10,20" ShowGridLines="True">
+	<Grid Name="mainGrid" Margin="10,20,10,20">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
 			<ColumnDefinition />

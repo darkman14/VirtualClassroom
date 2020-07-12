@@ -189,6 +189,44 @@ namespace VirtualClassroom.Repository
 			return institutions;
 		}
 
+		public Institution GetById(int id)
+		{
+			Institution institution = new Institution();
+
+			try
+			{
+				Connection();
+				string query = "SELECT * FROM Institution WHERE Id = " + id;
+				
+				DataTable dt = new DataTable();
+				DataSet ds = new DataSet();
+
+				using (SqlCommand cmd = con.CreateCommand())
+				{
+					cmd.CommandText = query;
+					SqlDataAdapter dataAdapter = new SqlDataAdapter();
+					dataAdapter.SelectCommand = cmd;
+					dataAdapter.Fill(ds, "Institution");
+					dt = ds.Tables["Institution"];
+					con.Close();
+				}
+
+				foreach (DataRow dataRow in dt.Rows)
+				{
+					int institutionId = int.Parse(dataRow["Id"].ToString());
+					institution.Code = dataRow["Code"].ToString();
+					institution.Name = dataRow["Institution_name"].ToString();
+					institution.Address = dataRow["Institution_address"].ToString();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return institution;
+		}
+
 		private string GetQuery(Dictionary<string, string> searchParameters, out string obj, out string parameter)
 		{
 			foreach (string param in searchParameters.Keys)

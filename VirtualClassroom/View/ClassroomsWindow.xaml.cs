@@ -16,9 +16,14 @@ namespace VirtualClassroom.View
     public partial class ClassroomsWindow : Window, INotifyPropertyChanged
 	{
 		IClassroomsInterface _classroom = new ClassroomRepo();
+		IInstitutionInterface _institution = new InstitutionRepo();
 		bool isLogged, isAdmin, isChange;
 		Visibility isVisible;
 		int instId = 0;
+		private string institutionName;
+		private int classId;
+		private IEnumerable<Institution> institutions;
+		private List<string> institutionNames;
 
 		public bool IsLogged
 		{
@@ -80,20 +85,71 @@ namespace VirtualClassroom.View
 		{
 			get
 			{
-				return ClassId;
+				return classId;
 			}
 
 			set
 			{
-				ClassId = value;
+				classId = value;
 				OnPropertyChanged(nameof(ClassId));
+			}
+		}
+
+		public string InstitutionName
+		{
+			get
+			{
+				return institutionName;
+			}
+
+			set
+			{
+				institutionName = value;
+				OnPropertyChanged(nameof(InstitutionName));
+			}
+		}
+
+		public List<string> InstitutionNames
+		{
+			get
+			{
+				return institutionNames;
+			}
+
+			set
+			{
+				institutionNames = value;
+				OnPropertyChanged(nameof(InstitutionNames));
+			}
+		}
+
+		public IEnumerable<Institution> Institutions
+		{
+			get
+			{
+				return institutions;
+			}
+
+			set
+			{
+				institutions = value;
+				OnPropertyChanged(nameof(Institutions));
 			}
 		}
 
 		public ClassroomsWindow(User user)
 		{
 			InitializeComponent();
-			IEnumerable<Classroom> Classroom = _classroom.GetAll();
+			IEnumerable<Classroom> Classrooms = _classroom.GetAll();
+			institutions = _institution.GetAll();
+			institutionNames = new List<string>();
+			foreach (Institution i in institutions)
+			{
+				institutionNames.Add(i.Name);
+			}
+
+			PopulateInstitutionName(Classrooms, institutions);
+
 			isChange = false;
 
 			if (user == null)
@@ -116,9 +172,19 @@ namespace VirtualClassroom.View
 			}
 
 			DataContext = this;
-			dgClassrooms.ItemsSource = Classroom;
+			dgClassrooms.ItemsSource = Classrooms;
 
 		}
+
+		private void PopulateInstitutionName(IEnumerable<Classroom> classrooms, IEnumerable<Institution> institutions)
+		{
+			foreach (var c in classrooms)
+			{
+				Institution institution = institutions.Where(i => i.Id == c.Institution.Id).FirstOrDefault();
+				c.InstitutionName = institution.Name;
+			}
+		}
+
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			Classroom classroom = (Classroom)dgClassrooms.SelectedItem;
@@ -129,7 +195,7 @@ namespace VirtualClassroom.View
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text) || !(bool)boolHasComp.IsChecked)
+			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text))
 			{
 				MessageBox.Show("Sva polja za unos moraju biti popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
@@ -161,7 +227,8 @@ namespace VirtualClassroom.View
 			searchParameters.Add("Code", txtSearchCode.Text);
 			searchParameters.Add("ClassroomNo", txtSearchClassroomNo.Text);
 			searchParameters.Add("SeatsNo", txtSearchSeatsNo.Text);
-			searchParameters.Add("TypeOfClassroom", txtSearchTypeOfClassroom.Text);
+			searchParameters.Add("HasComp", boolSearchHasComp.IsChecked.ToString());
+			searchParameters.Add("InstitutionNames", InstitutionName);
 
 
 			if (CheckParameters(searchParameters))
@@ -170,7 +237,7 @@ namespace VirtualClassroom.View
 				txtSearchCode.Clear();
 				txtSearchClassroomNo.Clear();
 				txtSearchSeatsNo.Clear();
-				txtSearchTypeOfClassroom.Clear();
+				boolSearchHasComp.IsChecked = false;
 
 			}
 			else
@@ -200,13 +267,14 @@ namespace VirtualClassroom.View
 
 		private void btnUpdate_Click(object sender, RoutedEventArgs e)
 		{
-			var instHelp = (Button)sender;
-			Classroom classroom = instHelp.DataContext as Classroom;
+			var classHelp = (Button)sender;
+			Classroom classroom = classHelp.DataContext as Classroom;
 
 			txtChangeCode.Text = classroom.Code;
 			txtChangeClassroomNo.Text = classroom.ClassroomNo.ToString();
 			txtChangeSeatsNo.Text = classroom.SeatsNo.ToString();
-			txtChangeTypeOfClassroom.Text = GetClassroomType(classroom.HasComp);
+			boolChangeHasComp.IsChecked = classroom.HasComp;
+			
 			ClassId = classroom.Id;
 			IsChange = true;
 
@@ -223,7 +291,7 @@ namespace VirtualClassroom.View
 
 		private void btnChange_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text) || string.IsNullOrEmpty(txtChangeTypeOfClassroom.Text))
+			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text) )
 			{
 				MessageBox.Show("Potrebno je da sva polja budu popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
@@ -233,7 +301,7 @@ namespace VirtualClassroom.View
 
 			if (classrooms.Any(x => x.Code == txtChangeCode.Text))
 			{
-				MessageBox.Show("Ustanova sa datom sifrom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
+				MessageBox.Show("Ucionica sa datom sifrom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
 			}
 			else
 			{
@@ -245,7 +313,7 @@ namespace VirtualClassroom.View
 			txtChangeCode.Clear();
 			txtChangeClassroomNo.Clear();
 			txtChangeSeatsNo.Clear();
-			txtChangeTypeOfClassroom.Clear();
+			boolHasComp.IsChecked = false;
 			dgClassrooms.ItemsSource = _classroom.GetAll();
 		}
 
