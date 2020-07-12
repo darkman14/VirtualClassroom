@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="ClassroomsWindow" Height="300" Width="300">
+        Title="ClassroomsWindow" Height="800" Width="1000">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid Name="mainGrid" Margin="10,20,10,20" >
         <Grid.ColumnDefinitions>
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -52,7 +53,21 @@
         <TextBlock Grid.Row="0" Grid.Column="3" 
 				   HorizontalAlignment="Center" 
 				   VerticalAlignment="Bottom"
+				   Text="Broj sjedista: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="4" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
 				   Text="Tip ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="5" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Ustanova: "
 				   FontFamily="Arial"
 				   FontSize="14"
 				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -83,14 +98,24 @@
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <CheckBox Grid.Row="1" Grid.Column="3"
+        <CheckBox Grid.Row="1" Grid.Column="4"
 				 Height="25"
 				 Width="150"
 				 HorizontalAlignment="Center"
 				 VerticalAlignment="Center" 
 				 Name="boolHasComp"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Button Grid.Row="1" Grid.Column="4"
+        <StackPanel>
+            <Button Click="Button_Click">asdf</Button>
+            <ComboBox Grid.Row="1" Grid.Column="5"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="boolInstitution"
+				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+        <Button Grid.Row="1" Grid.Column="6"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
 				Content="Dodaj ucionicu" 
@@ -124,10 +149,16 @@
 				   Text="Po broju sjedista: "
 				   FontFamily="Arial"
 				   FontSize="14" />
-        <TextBlock Grid.Row="2" Grid.Column="3" 
+        <TextBlock Grid.Row="2" Grid.Column="4" 
 				   HorizontalAlignment="Center" 
 				   VerticalAlignment="Bottom"
 				   Text="Po tipu ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14" />
+        <TextBlock Grid.Row="2" Grid.Column="5" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Po ustanovi: "
 				   FontFamily="Arial"
 				   FontSize="14" />
         <TextBox Grid.Row="3" Grid.Column="1"
@@ -154,15 +185,26 @@
 				 Name="txtSearchSeatsNo"
 				 FontFamily="Arial"
 				 FontSize="12" />
-        <TextBox Grid.Row="3" Grid.Column="3"
+        <CheckBox Grid.Row="3" Grid.Column="4"
 				 Height="25"
 				 Width="150"
 				 HorizontalAlignment="Center"
 				 VerticalAlignment="Center" 
-				 Name="txtSearchTypeOfClassroom"
+				 Name="boolSearchHasComp"
 				 FontFamily="Arial"
 				 FontSize="12" />
-        <Button Grid.Row="3" Grid.Column="4"
+        <StackPanel>
+            <Button Click="Button_Click">asdf</Button>
+            <ComboBox Grid.Row="3" Grid.Column="5"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="boolSearchInstitution"
+				 FontFamily="Arial"
+				 FontSize="12" />
+        </StackPanel>
+        <Button Grid.Row="3" Grid.Column="6"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Center" 
 				Click="btnSearch_Click"
@@ -172,12 +214,12 @@
 				Height="25">
             <Image Source="/content/magnifier.jpg"/>
         </Button>
-        <DataGrid Grid.Row="5" Grid.ColumnSpan="5" Name="dgClassrooms" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
+        <DataGrid Grid.Row="4" Grid.ColumnSpan="5" Name="dgClassrooms" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="150" />
-                <DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="150" />
-                <DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="150" />
-                <DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="150" />
+                <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="120" />
+                <DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="120" />
+                <DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="120" />
+                <DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="120" />
                 <DataGridTemplateColumn Width="130" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
@@ -238,10 +280,17 @@
 				   FontFamily="Arial"
 				   FontSize="14"
 				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <TextBlock Grid.Row="5" Grid.Column="3" 
+        <TextBlock Grid.Row="5" Grid.Column="4" 
 				   HorizontalAlignment="Center" 
 				   VerticalAlignment="Bottom"
 				   Text="Tip ucionice: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="5" Grid.Column="5" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Ustanova: "
 				   FontFamily="Arial"
 				   FontSize="14"
 				   Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -272,16 +321,28 @@
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <TextBox Grid.Row="6" Grid.Column="3"
+        <CheckBox Grid.Row="6" Grid.Column="4"
 				 Height="25"
 				 Width="150"
 				 HorizontalAlignment="Center"
 				 VerticalAlignment="Center" 
-				 Name="txtChangeTypeOfClassroom"
+				 Name="boolChangeHasComp"
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Button Grid.Row="6" Grid.Column="4"
+        <StackPanel>
+            <Button Click="Button_Click">asdf</Button>
+            <ComboBox Grid.Row="6" Grid.Column="5"
+				 Height="25"
+				 Width="150"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center" 
+				 Name="boolChangeInstitution"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+        <Button Grid.Row="6" Grid.Column="6"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
 				Content="Potvrdi izmenu" 

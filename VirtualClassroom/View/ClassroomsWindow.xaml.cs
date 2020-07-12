@@ -129,7 +129,7 @@ namespace VirtualClassroom.View
 
 		private void btnAdd_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text) || !(bool)boolHasComp.IsChecked)
+			if (string.IsNullOrEmpty(txtCode.Text) || string.IsNullOrEmpty(txtNumberClassroom.Text) || string.IsNullOrEmpty(txtNoSeats.Text))
 			{
 				MessageBox.Show("Sva polja za unos moraju biti popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
@@ -161,7 +161,7 @@ namespace VirtualClassroom.View
 			searchParameters.Add("Code", txtSearchCode.Text);
 			searchParameters.Add("ClassroomNo", txtSearchClassroomNo.Text);
 			searchParameters.Add("SeatsNo", txtSearchSeatsNo.Text);
-			searchParameters.Add("TypeOfClassroom", txtSearchTypeOfClassroom.Text);
+			searchParameters.Add("HasComp", boolSearchHasComp.IsChecked.ToString());
 
 
 			if (CheckParameters(searchParameters))
@@ -170,7 +170,7 @@ namespace VirtualClassroom.View
 				txtSearchCode.Clear();
 				txtSearchClassroomNo.Clear();
 				txtSearchSeatsNo.Clear();
-				txtSearchTypeOfClassroom.Clear();
+				boolSearchHasComp.IsChecked = false;
 
 			}
 			else
@@ -206,7 +206,7 @@ namespace VirtualClassroom.View
 			txtChangeCode.Text = classroom.Code;
 			txtChangeClassroomNo.Text = classroom.ClassroomNo.ToString();
 			txtChangeSeatsNo.Text = classroom.SeatsNo.ToString();
-			txtChangeTypeOfClassroom.Text = GetClassroomType(classroom.HasComp);
+			boolChangeHasComp.IsChecked = classroom.HasComp;
 			ClassId = classroom.Id;
 			IsChange = true;
 
@@ -223,7 +223,7 @@ namespace VirtualClassroom.View
 
 		private void btnChange_Click(object sender, RoutedEventArgs e)
 		{
-			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text) || string.IsNullOrEmpty(txtChangeTypeOfClassroom.Text))
+			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text))
 			{
 				MessageBox.Show("Potrebno je da sva polja budu popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
@@ -245,7 +245,7 @@ namespace VirtualClassroom.View
 			txtChangeCode.Clear();
 			txtChangeClassroomNo.Clear();
 			txtChangeSeatsNo.Clear();
-			txtChangeTypeOfClassroom.Clear();
+			boolHasComp.IsChecked = false;
 			dgClassrooms.ItemsSource = _classroom.GetAll();
 		}
 

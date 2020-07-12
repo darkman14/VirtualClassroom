@@ -12,6 +12,8 @@ namespace VirtualClassroom.Repository
     public class ClassroomRepo : IClassroomsInterface
 	{
 		private SqlConnection con;
+		private IInstitutionInterface _institution = new InstitutionRepo();
+
 		private void Connection()
 		{
 			string constr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
@@ -21,7 +23,7 @@ namespace VirtualClassroom.Repository
 		{
 			try
 			{
-				string query = "INSERT INTO Institution (code, classroom_classroomNo, classroom_seatsNo, classroom_typeOfClassroom) VALUES (@code, @classroomNo, @seatsNo, @typeOfClassroom);";
+				string query = "INSERT INTO Classroom (code, classroom_number, number_of_seats, type_of_classroom) VALUES (@code, @classroomNo, @seatsNo, @typeOfClassroom);";
 				query += " SELECT SCOPE_IDENTITY()";
 
 				Connection();
@@ -33,7 +35,6 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@classroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@seatsNo", classroom.SeatsNo);
 					cmd.Parameters.AddWithValue("@typeOfClassroom", classroom.HasComp);
-
 
 					con.Open();
 					var newFormedId = cmd.ExecuteScalar();
@@ -101,10 +102,13 @@ namespace VirtualClassroom.Repository
 				foreach (DataRow dataRow in dt.Rows)
 				{
 					int classroomId = int.Parse(dataRow["Id"].ToString());
-					string code = dataRow["Code"].ToString();
-					string classroomNo = dataRow["Classroom_classroomNo"].ToString();
-					string seatsNo = dataRow["Classroom_seatsNo"].ToString();
-					bool hasComp = (dataRow["Classroom_typeOfClassroom"].ToString() == "0") ? false : true;
+					string code = dataRow["code"].ToString();
+					string classroomNo = dataRow["classroom_number"].ToString();
+					string seatsNo = dataRow["number_of_seats"].ToString();
+					bool hasComp = (dataRow["type_of_classroom"].ToString() == "0") ? false : true;
+					int institutionId = int.Parse(dataRow["institution_id"].ToString());
+
+					Institution institution = _institution.GetById(institutionId);
 
 					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp });
 				}
@@ -144,7 +148,6 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@ClassroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@SeatsNo", classroom.SeatsNo);
 					cmd.Parameters.AddWithValue("@TypeOfClassroom", classroom.HasComp);
-
 
 					con.Open();
 					cmd.ExecuteNonQuery();
