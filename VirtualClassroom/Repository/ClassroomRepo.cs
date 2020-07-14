@@ -107,6 +107,11 @@ namespace VirtualClassroom.Repository
 					string seatsNo = dataRow["number_of_seats"].ToString();
 					bool hasComp = (dataRow["type_of_classroom"].ToString() == "0") ? false : true;
 					int institutionId = int.Parse(dataRow["institution_id"].ToString());
+<<<<<<< HEAD
+=======
+
+					Institution institution = _institution.GetById(institutionId);
+>>>>>>> develop
 
 					Institution institution = _institution.GetById(institutionId);
 

@@ -228,7 +228,10 @@ namespace VirtualClassroom.View
 			searchParameters.Add("ClassroomNo", txtSearchClassroomNo.Text);
 			searchParameters.Add("SeatsNo", txtSearchSeatsNo.Text);
 			searchParameters.Add("HasComp", boolSearchHasComp.IsChecked.ToString());
+<<<<<<< HEAD
 			searchParameters.Add("InstitutionNames", InstitutionName);
+=======
+>>>>>>> develop
 
 
 			if (CheckParameters(searchParameters))
@@ -274,7 +277,10 @@ namespace VirtualClassroom.View
 			txtChangeClassroomNo.Text = classroom.ClassroomNo.ToString();
 			txtChangeSeatsNo.Text = classroom.SeatsNo.ToString();
 			boolChangeHasComp.IsChecked = classroom.HasComp;
+<<<<<<< HEAD
 			
+=======
+>>>>>>> develop
 			ClassId = classroom.Id;
 			IsChange = true;
 
@@ -291,7 +297,11 @@ namespace VirtualClassroom.View
 
 		private void btnChange_Click(object sender, RoutedEventArgs e)
 		{
+<<<<<<< HEAD
 			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text) )
+=======
+			if (string.IsNullOrEmpty(txtChangeCode.Text) || string.IsNullOrEmpty(txtChangeClassroomNo.Text) || string.IsNullOrEmpty(txtChangeSeatsNo.Text))
+>>>>>>> develop
 			{
 				MessageBox.Show("Potrebno je da sva polja budu popunjena", "Info poruka", MessageBoxButton.OK);
 				return;
