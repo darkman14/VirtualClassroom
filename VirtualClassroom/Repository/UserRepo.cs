@@ -92,5 +92,45 @@ namespace VirtualClassroom.Repository
         {
             throw new NotImplementedException();
         }
+
+        public User GetByUsername(string username)
+        {
+            User user = new User();
+
+            try
+            {
+                Connection();
+                string query = "SELECT * FROM Institution WHERE Username = " + username;
+
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+                    dataAdapter.Fill(ds, "UserX");
+                    dt = ds.Tables["UserX"];
+                    con.Close();
+                }
+
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    int institutionId = int.Parse(dataRow["Id"].ToString());
+                    user.Name = dataRow["Uname"].ToString();
+                    user.Surname = dataRow["Usurname"].ToString();
+                    user.Email = dataRow["Email"].ToString();
+                    user.Username = dataRow["Username"].ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return user;
+        }
     }
 }
