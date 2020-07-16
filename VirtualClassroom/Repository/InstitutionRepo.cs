@@ -213,7 +213,7 @@ namespace VirtualClassroom.Repository
 
 				foreach (DataRow dataRow in dt.Rows)
 				{
-					int institutionId = int.Parse(dataRow["Id"].ToString());
+					institution.Id = int.Parse(dataRow["Id"].ToString()); //moze i institution.Id = id;
 					institution.Code = dataRow["Code"].ToString();
 					institution.Name = dataRow["Institution_name"].ToString();
 					institution.Address = dataRow["Institution_address"].ToString();
@@ -225,6 +225,41 @@ namespace VirtualClassroom.Repository
 			}
 
 			return institution;
+		}
+
+		public int GetByName(string institutionName)
+		{
+			List<int> ids = new List<int>();
+
+			try
+			{
+				Connection();
+				string query = "SELECT Id FROM Institution WHERE Institution_Name = " + institutionName;
+
+				DataTable dt = new DataTable();
+				DataSet ds = new DataSet();
+
+				using (SqlCommand cmd = con.CreateCommand())
+				{
+					cmd.CommandText = query;
+					SqlDataAdapter dataAdapter = new SqlDataAdapter();
+					dataAdapter.SelectCommand = cmd;
+					dataAdapter.Fill(ds, "Institution");
+					dt = ds.Tables["Institution"];
+					con.Close();
+				}
+
+				foreach (DataRow dataRow in dt.Rows)
+				{
+					ids.Add(int.Parse(dataRow["Id"].ToString()));
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return ids.FirstOrDefault();
 		}
 
 		private string GetQuery(Dictionary<string, string> searchParameters, out string obj, out string parameter)
@@ -252,5 +287,5 @@ namespace VirtualClassroom.Repository
 			obj = string.Empty;
 			return string.Empty;
 		}
-	}
+    }
 }

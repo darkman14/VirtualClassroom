@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using VirtualClassroom.Converters;
 using VirtualClassroom.Interfaces;
 using VirtualClassroom.Model;
 
@@ -19,11 +20,12 @@ namespace VirtualClassroom.Repository
 			string constr = ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString;
 			con = new SqlConnection(constr);
 		}
+
 		public bool Add(Classroom classroom)
 		{
 			try
 			{
-				string query = "INSERT INTO Classroom (code, classroom_number, number_of_seats, type_of_classroom) VALUES (@code, @classroomNo, @seatsNo, @typeOfClassroom);";
+				string query = "INSERT INTO Classroom (code, classroom_number, number_of_seats, type_of_classroom, institution_id) VALUES (@code, @classroomNo, @seatsNo, @typeOfClassroom, @institutionId);";
 				query += " SELECT SCOPE_IDENTITY()";
 
 				Connection();
@@ -35,6 +37,7 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@classroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@seatsNo", classroom.SeatsNo);
 					cmd.Parameters.AddWithValue("@typeOfClassroom", classroom.HasComp);
+					cmd.Parameters.AddWithValue("@institutionId", classroom.Institution.Id);
 
 					con.Open();
 					var newFormedId = cmd.ExecuteScalar();
@@ -54,6 +57,7 @@ namespace VirtualClassroom.Repository
 			}
 
 		}
+
 		public void Delete(int id)
 		{
 			try
@@ -77,6 +81,7 @@ namespace VirtualClassroom.Repository
 				throw ex;
 			}
 		}
+
 		public IEnumerable<Classroom> GetAll()
 		{
 			List<Classroom> classrooms = new List<Classroom>();
@@ -106,16 +111,12 @@ namespace VirtualClassroom.Repository
 					string classroomNo = dataRow["classroom_number"].ToString();
 					string seatsNo = dataRow["number_of_seats"].ToString();
 					bool hasComp = (dataRow["type_of_classroom"].ToString() == "0") ? false : true;
+					string typeOfClassroom = BoolToString(hasComp);
 					int institutionId = int.Parse(dataRow["institution_id"].ToString());
-<<<<<<< HEAD
-=======
-
-					Institution institution = _institution.GetById(institutionId);
->>>>>>> develop
-
+					
 					Institution institution = _institution.GetById(institutionId);
 
-					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp, Institution = institution});
+					classrooms.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp, Institution = institution, TypeOfClassroom = typeOfClassroom});
 				}
 			}
 			catch (Exception ex)
@@ -125,23 +126,12 @@ namespace VirtualClassroom.Repository
 
 			return classrooms;
 		}
-		private int GetNo(string text)
-		{
-			int outNumber;
-			bool isValid = Int32.TryParse(text, out outNumber);
-
-			if (isValid)
-			{
-				return outNumber;
-			}
-			return 0;
-		}
 
 		public void Update(Classroom classroom)
 		{
 			try
 			{
-				string query = "UPDATE Classroom SET code = @Code, classroom_classroomNo = @ClassroomNo, classroom_seatsNo = @SeatsNo, classroom_typeOfClassroom = @TypeOfClassroom WHERE id = @Id;";
+				string query = "UPDATE Classroom SET code = @Code, classroom_number = @ClassroomNo, number_of_seats = @SeatsNo, type_of_classroom = @TypeOfClassroom, institution_id = @InstitutionId WHERE id = @Id;";
 
 				Connection();
 				 
@@ -153,6 +143,7 @@ namespace VirtualClassroom.Repository
 					cmd.Parameters.AddWithValue("@ClassroomNo", classroom.ClassroomNo);
 					cmd.Parameters.AddWithValue("@SeatsNo", classroom.SeatsNo);
 					cmd.Parameters.AddWithValue("@TypeOfClassroom", classroom.HasComp);
+					cmd.Parameters.AddWithValue("@InstitutionId", classroom.Institution.Id);
 
 					con.Open();
 					cmd.ExecuteNonQuery();
@@ -164,6 +155,7 @@ namespace VirtualClassroom.Repository
 				throw ex;
 			}
 		}
+
 		public IEnumerable<Classroom> GetByParameters(Dictionary<string, string> searchParameters)
 		{
 			List<Classroom> classroom = new List<Classroom>();
@@ -198,8 +190,9 @@ namespace VirtualClassroom.Repository
 					string classroomNo = dataRow["Classroom_classroomNo"].ToString();
 					string seatsNo = dataRow["Classroom_seatsNo"].ToString();
 					bool hasComp = (dataRow["Classroom_typeOfClassroom"].ToString() == "0") ? false : true;
+					string typeOfClassroom = BoolToString(hasComp);
 
-					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp });
+					classroom.Add(new Classroom() { Id = classroomId, Code = code, ClassroomNo = GetNo(classroomNo), SeatsNo = GetNo(seatsNo), HasComp = hasComp, TypeOfClassroom = typeOfClassroom });
 				}
 			}
 			catch (Exception ex)
@@ -210,7 +203,7 @@ namespace VirtualClassroom.Repository
 			return classroom;
 		}
 		
-		string GetQuery(Dictionary<string, string> searchParameters, out string obj, out string parameter)
+		private string GetQuery(Dictionary<string, string> searchParameters, out string obj, out string parameter)
 		{
 			foreach (string param in searchParameters.Keys)
 			{
@@ -236,6 +229,26 @@ namespace VirtualClassroom.Repository
 			parameter = string.Empty;
 			obj = string.Empty;
 			return string.Empty;
+		}
+
+		private string BoolToString(bool hasComp)
+		{
+			if (hasComp == true)
+				return "Ima racunar";
+			else
+				return "Nema racunar";
+		}
+
+		private int GetNo(string text)
+		{
+			int outNumber;
+			bool isValid = Int32.TryParse(text, out outNumber);
+
+			if (isValid)
+			{
+				return outNumber;
+			}
+			return 0;
 		}
 	}
 }

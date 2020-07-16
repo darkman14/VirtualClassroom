@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualClassroom.Converters;
 
 namespace VirtualClassroom.Model
 {
@@ -17,6 +18,7 @@ namespace VirtualClassroom.Model
         private bool hasComp;
         private Institution institution;
         private string institutionName;
+        private string typeOfClassroom;
         #endregion Fields
 
         #region Properties
@@ -96,6 +98,19 @@ namespace VirtualClassroom.Model
             {
                 hasComp = value;
                 OnPropertyChanged(nameof(HasComp));
+            }
+        }
+
+        public string TypeOfClassroom
+        {
+            get
+            {
+                return typeOfClassroom;
+            }
+            set
+            {
+                typeOfClassroom = value;
+                OnPropertyChanged(nameof(TypeOfClassroom));
             }
         }
 

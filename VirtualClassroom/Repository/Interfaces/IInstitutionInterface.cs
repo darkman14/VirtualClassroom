@@ -11,5 +11,6 @@ namespace VirtualClassroom.Interfaces
         void Update(Institution institution);
         void Delete(int id);
         Institution GetById(int id);
+        int GetByName(string institutionName);
     }
 }
