@@ -4,12 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-<<<<<<< HEAD
         Title="ClassroomsWindow" Height="1000" Width="1000">
-=======
-        Title="ClassroomsWindow" Height="800" Width="1000">
->>>>>>> develop
-
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
@@ -109,7 +104,6 @@
 				 VerticalAlignment="Center" 
 				 Name="boolHasComp"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-<<<<<<< HEAD
         <ComboBox  Grid.Row="1" Grid.Column="5"
 				 Height="25"
 				 Width="120"
@@ -119,18 +113,6 @@
 				 FontSize="12"
 				 ItemsSource="{Binding InstitutionNames}"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-=======
-        <StackPanel>
-            <Button Click="Button_Click">asdf</Button>
-            <ComboBox Grid.Row="1" Grid.Column="5"
-				 Height="25"
-				 Width="150"
-				 HorizontalAlignment="Center"
-				 VerticalAlignment="Center" 
-				 Name="boolInstitution"
-				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        </StackPanel>
->>>>>>> develop
         <Button Grid.Row="1" Grid.Column="6"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
@@ -209,7 +191,6 @@
 				 Name="boolSearchHasComp"
 				 FontFamily="Arial"
 				 FontSize="12" />
-<<<<<<< HEAD
         <ComboBox Grid.Row="3" Grid.Column="5"
 				 Height="25"
 				 Width="120"
@@ -218,19 +199,6 @@
 				 FontFamily="Arial"
 				 FontSize="12"
                  ItemsSource="{Binding InstitutionNames}" />
-=======
-        <StackPanel>
-            <Button Click="Button_Click">asdf</Button>
-            <ComboBox Grid.Row="3" Grid.Column="5"
-				 Height="25"
-				 Width="150"
-				 HorizontalAlignment="Center"
-				 VerticalAlignment="Center" 
-				 Name="boolSearchInstitution"
-				 FontFamily="Arial"
-				 FontSize="12" />
-        </StackPanel>
->>>>>>> develop
         <Button Grid.Row="3" Grid.Column="6"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Center" 
@@ -242,21 +210,14 @@
             <Image Source="/content/magnifier.jpg"/>
         </Button>
         <DataGrid Grid.Row="4" Grid.ColumnSpan="5" Name="dgClassrooms" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
-            <DataGrid.Columns>
-<<<<<<< HEAD
-                <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="100" />
-                <DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="100" />
-                <DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="100" />
-                <DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="100" />
-                <DataGridTextColumn Header="Ustanove" Binding="{Binding InstitutionName}" Width="100" />
-                <DataGridTemplateColumn Width="100" >
-=======
-                <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="120" />
-                <DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="120" />
-                <DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="120" />
-                <DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="120" />
-                <DataGridTemplateColumn Width="130" >
->>>>>>> develop
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Sifra ucionice" Binding="{Binding Code}" Width="100" />
+					<DataGridTextColumn Header="Broj Ucionice" Binding="{Binding ClassroomNo}" Width="100" />
+					<DataGridTextColumn Header="Broj Sjedista" Binding="{Binding SeatsNo}" Width="100" />
+					<DataGridTextColumn Header="Tip ucionice" Binding="{Binding TypeOfClassroom}" Width="100" />
+					<DataGridTextColumn Header="Ustanove" Binding="{Binding InstitutionName}" Width="100" />
+                    <DataGridTemplateColumn Width="100" >
+                    
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <Button Content="Obrisi ucionicu" Click="btnDelete_Click" 
@@ -357,7 +318,7 @@
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <CheckBox Grid.Row="6" Grid.Column="4"
+		<CheckBox Grid.Row="6" Grid.Column="4"
 				 Height="25"
 				 Width="150"
 				 HorizontalAlignment="Center"
@@ -366,7 +327,6 @@
 				 FontFamily="Arial"
 				 FontSize="12"
 				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-<<<<<<< HEAD
         <ComboBox  Grid.Row="6" Grid.Column="5"
 				 Height="25"
 				 Width="150"
@@ -376,29 +336,15 @@
 				 FontSize="12"
 				 ItemsSource="{Binding InstitutionNames}"
 				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-=======
-        <StackPanel>
-            <Button Click="Button_Click">asdf</Button>
-            <ComboBox Grid.Row="6" Grid.Column="5"
-				 Height="25"
-				 Width="150"
-				 HorizontalAlignment="Center"
-				 VerticalAlignment="Center" 
-				 Name="boolChangeInstitution"
-				 FontFamily="Arial"
-				 FontSize="12"
-				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        </StackPanel>
->>>>>>> develop
         <Button Grid.Row="6" Grid.Column="6"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center"
-				Content="Potvrdi izmenu" 
-				Click="btnChange_Click"
-				FontFamily="Arial"
-				FontSize="14"
-				Width="120"
-				Height="25"
-				Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center"
+				 Content="Potvrdi izmenu" 
+				 Click="btnChange_Click"
+				 FontFamily="Arial"
+				 FontSize="14"
+				 Width="120"
+				 Height="25"
+				 Visibility="{Binding IsChange, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </Window>
