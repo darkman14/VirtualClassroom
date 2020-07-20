@@ -27,9 +27,49 @@ namespace VirtualClassroom.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<User> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            List<User> users = new List<User>();
+
+            try
+            {
+                string query = "SELECT * FROM UserX;";
+                Connection();
+
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+                    dataAdapter.Fill(ds, "UserX");
+                    dt = ds.Tables["UserX"];
+                    con.Close();
+                }
+
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    int institutionId = int.Parse(dataRow["Id"].ToString());
+                    string name = dataRow["Uname"].ToString();
+                    string surname = dataRow["Usurname"].ToString();
+                    string email = dataRow["email"].ToString();
+                    string username = dataRow["username"].ToString();
+                    int roleId = 0;
+                    int profesorId = 0;
+                    bool isRole = int.TryParse(dataRow["RoleId"].ToString(), out roleId);
+                    bool isProfesorId = int.TryParse(dataRow["Profesor_Id"].ToString(), out profesorId);
+
+                    users.Add(new User() { Id = institutionId, Name = name, Surname = surname, Email = email, Username = username, UserRole = (User.Role)roleId, ProfesorId = profesorId });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return users;
         }
 
         public User GetById(int id)

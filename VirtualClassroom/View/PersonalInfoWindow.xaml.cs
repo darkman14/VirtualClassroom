@@ -92,7 +92,7 @@ namespace VirtualClassroom.View
 
 		public PersonalInfoWindow(User user)
 		{
-			InitializeComponent();
+			//InitializeComponent();
 			user = _personalInfo.GetByUsername(user.Username);
 			isChange = false;
 
@@ -116,7 +116,7 @@ namespace VirtualClassroom.View
 			}
 
 			DataContext = this;
-			dgPersonalInfo.ItemsSource = User;
+			//dgPersonalInfo.ItemsSource = User;
 
 		}
 

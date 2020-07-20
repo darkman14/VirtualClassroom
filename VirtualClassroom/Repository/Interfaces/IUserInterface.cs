@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using VirtualClassroom.Model;
 
 namespace VirtualClassroom.Repository
 {
     public interface IUserInterface
     {
-        IQueryable<User> GetAll();
+        IEnumerable<User> GetAll();
         User GetById(int id);
         bool IsLogged(string username, string password, out User user);
         void AddUser(User user);

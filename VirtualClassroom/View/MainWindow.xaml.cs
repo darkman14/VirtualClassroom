@@ -103,7 +103,7 @@ namespace VirtualClassroom
 
         private void btnUser_Click(object sender, RoutedEventArgs e)
         {
-            PersonalInfoWindow personalInfoWindow = new PersonalInfoWindow();
+            PersonalInfoWindow personalInfoWindow = new PersonalInfoWindow(user);
             personalInfoWindow.ShowDialog();
         }
 
