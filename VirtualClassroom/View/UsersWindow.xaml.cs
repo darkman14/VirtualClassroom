@@ -17,9 +17,11 @@ namespace VirtualClassroom.View
     public partial class UsersWindow : Window, INotifyPropertyChanged
     {
         IUserInterface _user = new UserRepo();
-        bool isLogged, isAdmin, isChange;
+        bool isLogged, isAdmin, isChange, isAssistentSelected;
+        bool handle = true;
         Visibility isVisible;
         Dictionary<int, string> userRoles = new Dictionary<int, string>();
+        Dictionary<int, string> professors = new Dictionary<int, string>();
         int userId;
 
         public bool IsLogged
@@ -105,11 +107,38 @@ namespace VirtualClassroom.View
             }
         }
 
+        public Dictionary<int, string> Professors
+        {
+            get
+            {
+                return professors;
+            }
+            set
+            {
+                professors = value;
+                OnPropertyChanged(nameof(Professors));
+            }
+        }
+
+        public bool IsAssistentSelected
+        {
+            get
+            {
+                return isAssistentSelected;
+            }
+            set
+            {
+                isAssistentSelected = value;
+                OnPropertyChanged(nameof(IsAssistentSelected));
+            }
+        }
+
         public UsersWindow(User user)
         {
             InitializeComponent();
             IEnumerable<User> users = _user.GetAll();
             isChange = false;
+            isAssistentSelected = false;
             userRoles = Enum.GetValues(typeof(Role)).Cast<Role>().ToDictionary(t => (int)t, t => t.ToString());
 
             if (user == null)
@@ -132,20 +161,19 @@ namespace VirtualClassroom.View
             }
 
             DataContext = this;
-            dgUser.ItemsSource = users;
-
+            dgUsers.ItemsSource = users;
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            User user = (User)dgUser.SelectedItem;
+            User user = (User)dgUsers.SelectedItem;
             if (user.UserRole == Role.Administrator)
             {
                 MessageBox.Show("Korisnik sa rolom administrator ne moze biti izbrisan", "Info poruka", MessageBoxButton.OK);
                 return;
             }
             _user.DeleteUser(user.Id);
-            dgUser.ItemsSource = _user.GetAll();
+            dgUsers.ItemsSource = _user.GetAll();
         }
 
 
@@ -157,24 +185,16 @@ namespace VirtualClassroom.View
                 return;
             }
 
-            List<User> users = (List<User>)_user.GetAll();
+            User user = new User { Name = txtName.Text, Surname = txtSurname.Text, Username = txtUsername.Text, Email = txtEmail.Text, Password = txtPassword.Text, UserRole = (Role)comboUserRoles.SelectedIndex, ProfesorId = comboProfessors.SelectedIndex };
 
-            if (users.Any(x => x.Name == txtName.Text))
-            {
-                MessageBox.Show("Korisnik sa datim imenom vec postoji. Unesite ponovo!", "Info poruka", MessageBoxButton.OK);
-            }
-            else
-            {
-                User korisnik = new User() { Name = txtName.Text, Surname = txtSurname.Text, Email = txtEmail.Text, Username = txtUsername.Text, Password = txtPassword.Text };
-                //bool usSuccessfull = _user.AddUser(korisnik);
-            }
+            _user.Add(user);
 
             txtName.Clear();
             txtSurname.Clear();
             txtEmail.Clear();
             txtUsername.Clear();
             txtPassword.Clear();
-            dgUser.ItemsSource = _user.GetAll();
+            dgUsers.ItemsSource = _user.GetAll();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -186,8 +206,6 @@ namespace VirtualClassroom.View
             searchParameters.Add("Email", txtSearchEmail.Text);
             searchParameters.Add("Username", txtSearchUsername.Text);
             searchParameters.Add("Password", txtSearchPassword.Text);
-
-
 
             if (CheckParameters(searchParameters))
             {
@@ -266,9 +284,37 @@ namespace VirtualClassroom.View
             txtChangeEmail.Clear();
             txtChangeUsername.Clear();
             txtChangePassword.Clear();
-            dgUser.ItemsSource = _user.GetAll();
+            dgUsers.ItemsSource = _user.GetAll();
         }
 
+        #region Events
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            if (handle) Handle();
+            handle = true;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            handle = !cmb.IsDropDownOpen;
+            Handle();
+        }
+
+        private void Handle()
+        {
+            if (comboUserRoles.SelectedIndex == (int)Role.Asistent)
+            {
+                IsAssistentSelected = true;
+                Professors = _user.GetByRole((int)Role.Profesor).Distinct().ToDictionary(x => x.Id, y => y.Name + ' ' + y.Surname);
+            }
+            else
+            {
+                IsAssistentSelected = false;
+            }
+            DataContext = this;
+        }
+        #endregion Events
 
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;

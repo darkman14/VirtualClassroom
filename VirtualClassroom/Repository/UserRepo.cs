@@ -17,9 +17,42 @@ namespace VirtualClassroom.Repository
             con = new SqlConnection(constr);
         }
 
-        public void AddUser(User user)
+        public bool Add(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = "INSERT INTO UserX (uname, usurname, email, username, user_password, roleId, profesor_Id) VALUES (@name, @surname, @email, @username, @password, @roleId, @professorId);";
+                query += " SELECT SCOPE_IDENTITY()";
+
+                Connection();
+
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    cmd.Parameters.AddWithValue("@name", user.Name);
+                    cmd.Parameters.AddWithValue("@surname", user.Surname);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@username", user.Username);
+                    cmd.Parameters.AddWithValue("@password", user.Password);
+                    cmd.Parameters.AddWithValue("@roleId", (int)user.UserRole);
+                    cmd.Parameters.AddWithValue("@professorId", user.ProfesorId > 0 ? user.ProfesorId : 0);
+
+                    con.Open();
+                    var newFormedId = cmd.ExecuteScalar();
+                    con.Close();
+
+                    if (newFormedId != null)
+                    {
+                        return true;    // upis uspesan, generisan novi id
+                    }
+
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void DeleteUser(int id)
@@ -171,6 +204,51 @@ namespace VirtualClassroom.Repository
             }
 
             return user;
+        }
+
+        public List<User> GetByRole(int index)
+        {
+            List<User> users = new List<User>();
+
+            try
+            {
+                string query = "SELECT * FROM UserX where RoleId = " + index;
+                Connection();
+
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = cmd;
+                    dataAdapter.Fill(ds, "UserX");
+                    dt = ds.Tables["UserX"];
+                    con.Close();
+                }
+
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    int institutionId = int.Parse(dataRow["Id"].ToString());
+                    string name = dataRow["Uname"].ToString();
+                    string surname = dataRow["Usurname"].ToString();
+                    string email = dataRow["email"].ToString();
+                    string username = dataRow["username"].ToString();
+                    int roleId = 0;
+                    int profesorId = 0;
+                    bool isRole = int.TryParse(dataRow["RoleId"].ToString(), out roleId);
+                    bool isProfesorId = int.TryParse(dataRow["Profesor_Id"].ToString(), out profesorId);
+
+                    users.Add(new User() { Id = institutionId, Name = name, Surname = surname, Email = email, Username = username, UserRole = (User.Role)roleId, ProfesorId = profesorId });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return users;
         }
     }
 }

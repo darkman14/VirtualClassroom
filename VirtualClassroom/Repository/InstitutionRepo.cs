@@ -50,7 +50,6 @@ namespace VirtualClassroom.Repository
 			{
 				throw ex;
 			}
-
 		}
 
 		public void Delete(int id)

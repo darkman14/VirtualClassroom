@@ -82,6 +82,13 @@
 				   FontFamily="Arial"
 				   FontSize="14"
 				   Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Grid.Row="0" Grid.Column="7" 
+				   HorizontalAlignment="Center" 
+				   VerticalAlignment="Bottom"
+				   Text="Izaberi profesora: "
+				   FontFamily="Arial"
+				   FontSize="14"
+				   Visibility="{Binding IsAssistentSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBox Grid.Row="1" Grid.Column="1"
 				 Height="25"
 				 Width="150"
@@ -137,9 +144,24 @@
 				 FontSize="12"
 				 SelectedValue="{Binding UserRoles, Mode=TwoWay}"
 				 ItemsSource="{Binding UserRoles, Mode=OneTime}"
+                 SelectionChanged="ComboBox_SelectionChanged"
+                 DropDownClosed="ComboBox_DropDownClosed"
 				 SelectedValuePath="Key"
 				 DisplayMemberPath="Value"
 				 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <ComboBox  Grid.Row="1" Grid.Column="7"
+				 Height="25"
+				 Width="120"
+                 Name="comboProfessors"
+				 HorizontalAlignment="Center"
+				 VerticalAlignment="Center"
+				 FontFamily="Arial"
+				 FontSize="12"
+				 SelectedValue="{Binding Professors, Mode=TwoWay}"
+				 ItemsSource="{Binding Professors, Mode=OneTime}"
+				 SelectedValuePath="Key"
+				 DisplayMemberPath="Value"
+				 Visibility="{Binding IsAssistentSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button Grid.Row="1" Grid.Column="0"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
@@ -255,7 +277,7 @@
 				Height="25">
 			<Image Source="/content/magnifier.jpg"/>
 		</Button>
-		<DataGrid Grid.Row="4" Grid.ColumnSpan="5" Name="dgUser" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
+		<DataGrid Grid.Row="4" Grid.ColumnSpan="5" Name="dgUsers" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" >
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Ime" Binding="{Binding Name}" Width="120" />
 				<DataGridTextColumn Header="Prezime" Binding="{Binding Surname}" Width="120" />
